@@ -1,0 +1,117 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ver los trabajos del cliente</title>
+
+     <script src="{% static '/js/jquery-3.1.1.min.js' %}"></script>
+		<link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+		<link rel="stylesheet"href="{% static '/css/style.css' %}">
+		<link rel="stylesheet"href="{% static '/css/style2.css' %}">
+<link rel="stylesheet"href="{% static '/css/style3.css' %}">
+		<script src="{% static '/js/bootstrap.min.js' %}"></script>
+			<link rel="icon" href="media/icon.png" type="image/x-icon" />
+	<link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+</head>
+<body>
+<header>
+</header>
+<div class="container-fluid" style="padding: 0px">
+		<div class="container" style="width: 100%">
+         <nav class="navbar navbar-default navbar-fixed-top">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/api/home/">Carpintería Ramírez</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/api/home/">Página de inicio</a></li>
+            <li><a href="/api/about/">Acerca de nosotros</a></li>
+            <li><a href="/api/contact/">Contacto</a></li>
+            <li><a href="/api/login/">Inicia sesión o registrate</a></li>
+              <li><a href="/api/allposts/">Servicios y trabajos</a></li>
+              {% if user != None %}
+                  <li style="background: transparent">{% if user.is_superuser %}<a href="/api/newpost/"style="background: transparent"><form method="POST" action="/api/logout/"><strong>Sitio Admin:
+                     {% else %} <a href="/api/client/services/"style="background: transparent"><form method="POST" action="/api/logout/"><strong>Tus trabajos:{% endif%} {{ user.username }}</strong> {% csrf_token %}
+                      <input type="submit" value="Cerrar sesión" class="bg-info"></form></a></li>
+              {% endif %}
+          </ul>
+        </div>
+    </nav>
+        {%if services != None %}
+			<h1 class="text-center bg-gray table-bordered text-uppercase"><i>Tus trabajos {{ user.name }} {{ user.firstLastName }} {{ user.secondLastName }}</i></h1>
+ 			<hr class="table-bordered">
+                <div class="row">
+                            {% for service in services %}
+                                <div class="col-md-4">
+                            <div class="panel panel-default text-center">
+  <div class="panel-heading panel-title">
+    <h4>Nombre: {{service.name}}</h4>
+  </div>
+  <div class="panel-body">
+    <h4>Descripción:</h4>
+    <p class="-text">{{ service.description }}</p>
+    <p class="card-text">Costo: {{service.cost}}</p>
+    <strong><a href="/api/rest/clientpayments/{{ service.id }}/">Ver tus pagos</a></strong>
+  <br>
+       <div class="text-muted table-bordered bg-info">
+      <strong>Proceso en que se encuentra el trabajo:</strong>
+      {% if service.percentage > -1 and service.percentage < 25%}
+      <p class="card-text">Corte y lijado del diseño solicitado, que conforman los patrones del mueble.</p>
+      {% endif %}
+      {% if service.percentage > 24 and service.percentage < 50%}
+      <p class="card-text">Ensamblado de los diferentes patrones del diseño.</p>
+      {% endif %}
+      {% if service.percentage > 49 and service.percentage < 75%}
+      <p class="card-text">Acabado de barniz y lijado para dejar todas las partes finas.</p>
+      {% endif %}
+  {% if service.percentage > 74 and service.percentage < 100%}
+      <p class="card-text">Instalación de visagras, cristales, tiradores y todos los complementos del mueble.</p>
+      {% endif %}
+  {% if service.percentage == 100 %}
+      <p class="card-text">Listo para ser despachado.</p>
+      {% endif %}
+   <div class='progress'>
+                        <div class='progress-bar progress-bar-striped active' role='progressbar' aria-valuenow="{{service.percentage}}" aria-valuemin='0' aria-valuemax='100' style='width: {{ service.percentage }}%'>
+                            <span>{{ print }}{{ service.percentage }}% Completado</span>
+                        </div>
+      </div>
+  </div>
+  </div>
+
+</div>
+                                </div>
+                            {% endfor %}
+
+                </div>
+                </div>
+        {% else %}
+        <h1 class="text-center bg-gray table-bordered text-uppercase"><i>No tienes trabajos {{ user.name }} {{ user.firstLastName }} {{ user.secondLastName }}</i></h1>
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+            <div class="text-justify">
+                        <mark  class="text-justify bg-info text-large">
+                            Ponte en contacto con nosotros para que solicites o contrates cualquiera de <a href="/api/allposts/">nuestros servicios</a>.
+                        </mark>
+                        </div>
+            </div>
+            <div class="col-md-3"></div>
+        {% endif %}
+
+        </div>
+		<p class="text-center">
+			<i id="passwordHelpInline" class="text-muted"> Carpintería Ramírez: El mueble que se ajusta a su medida,
+            como usted lo necesite aquí se lo fabricamos.<br>Calle 18 de Marzo #18, Col. Corpus Christi, Chavinda Mich.
+            <br><img class="sma" src="/media/telefono.png">Telefóno: 3511224753 <img class="sma" src="/media/facebook.png"><a href="https://www.facebook.com/profile.php?id=100006842134922">Siguenos en facebook</a></i>
+		</p>
+	</div>
+</body>
+</html>

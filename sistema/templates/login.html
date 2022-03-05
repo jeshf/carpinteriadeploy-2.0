@@ -1,0 +1,126 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+	<title>Registrate en el sitio de la Carpintería Ramírez</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<head>
+		<script src="{% static '/js/jquery-3.1.1.min.js' %}"></script>
+		<link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+		<link rel="stylesheet"href="{% static '/css/style2.css' %}">
+		<script src="{% static '/js/bootstrap.min.js' %}"></script>
+		<link rel="icon" href="images/icon.png" type="image/x-icon" />
+	<link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+	</head>
+	<body>
+	<div class="container-fluid" style="padding: 0px">
+		<div class="container" style="width: 100%">
+            <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/api/home/">Carpintería Ramírez</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/api/home/">Página de inicio</a></li>
+            <li><a href="/api/about/">Acerca de nosotros</a></li>
+            <li><a href="/api/contact/">Contacto</a></li>
+            <li><a href="/api/login/">Inicia sesión o registrate</a></li>
+              <li><a href="/api/allposts/">Servicios y trabajos</a></li>
+              {% if user != None %}
+                  <li style="background: transparent">{% if user.is_superuser %}<a href="/api/newpost/"style="background: transparent"><form method="POST" action="/api/logout/"><strong>Sitio Admin:
+                     {% else %} <a href="/api/client/services/"style="background: transparent"><form method="POST" action="/api/logout/"><strong>Tus trabajos:{% endif%} {{ user.username }}</strong> {% csrf_token %}
+                      <input type="submit" value="Cerrar sesión" class="bg-info"></form></a></li>
+              {% endif %}
+          </ul>
+        </div>
+    </nav>
+			<h2 class="text-center" id="title">Carpintería Ramírez</h2>
+			 <p class="text-center">
+				<small id="passwordHelpInline" class="text-muted"> Atendidos por su amigo: Armando Ramírez Moreno Sígueme en facebook <a href="https://www.facebook.com/profile.php?id=100006842134922">Mi perfil de facebook</a></small>
+			</p>
+ 			<hr>
+			<div class="row">
+				<div class="col-md-5">
+ 					<form role="form" method="post">
+                        {% csrf_token %}
+                        {% if formu.errors %}
+    {% for field in formu %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in formu.non_field_errors %}
+        <div class="alert alert-danger">
+            <strong>{{ error|escape }}</strong>
+        </div>
+    {% endfor %}
+{% endif %}
+							<h3 class="text-uppercase text-center"> REGISTRATE</h3>
+ 							<div class="form-group">
+                                {{ formu.username}}
+							</div>
+							<div class="form-group">
+								{{ formu.password }}
+							</div>
+							<div class="form-group">
+								{{ formu.password2 }}
+							</div>
+                            <div class="form-group">
+								{{ formu.email }}
+							</div>
+                            <div class="form-group">
+								{{ formu.name }}
+							</div>
+                            <div class="form-group">
+								{{ formu.firstLastName }}
+							</div>
+                            <div class="form-group">
+								{{ formu.secondLastName }}
+							</div>
+                            <input type="hidden" name="flag" value="{{ "register" }}">
+							<label>
+								  Al registrarte aceptas todas nuestras políticas de cookies y privacidad.
+							</label>
+ 							<div>
+ 									  <input type="submit" class="btn btn-lg btn-primary"   value="Registrarse">
+ 							</div>
+					</form>
+				</div>
+				<div class="col-md-2">
+				</div>
+				<div class="col-md-5">
+                    <h3 class="text-uppercase"> Inicia sesión usando tu cuenta: </h3>
+                    <form role="form" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                                {{ form.usuario }}
+  </div>
+                        <div class=" form-group">
+								    {{ form.password }}
+                        </div>
+                        <div class="text-center">
+							<input type="submit" class="btn btn-primary">
+						</div>
+                        <input type="hidden" name="flag" value="{{ "login" }}">
+                    </form>
+				</div>
+			</div>
+		</div>
+		<p class="text-center">
+			<i id="passwordHelpInline" class="text-muted"> Carpintería Ramírez: El mueble que se ajusta a su medida,
+            como usted lo necesite aquí se lo fabricamos.<br>Calle 18 de Marzo #18, Col. Corpus Christi, Chavinda Mich.
+            <br><img class="sma" src="/media/telefono.png">Telefóno: 3511224753 <img class="sma" src="/media/facebook.png"><a href="https://www.facebook.com/profile.php?id=100006842134922">Siguenos en facebook</a></i>
+		</p>
+	</div>
+	</body>
+</html>

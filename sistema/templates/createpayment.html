@@ -1,0 +1,103 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar nuevos pagos</title>
+
+     <script src="{% static '/js/jquery-3.1.1.min.js' %}"></script>
+		<link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+		<link rel="stylesheet"href="{% static '/css/style.css' %}">
+		<link rel="stylesheet"href="{% static '/css/style2.css' %}">
+<link rel="stylesheet"href="{% static '/css/style3.css' %}">
+		<script src="{% static '/js/bootstrap.min.js' %}"></script>
+			<link rel="icon" href="media/icon.png" type="image/x-icon" />
+	<link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+</head>
+<body>
+<header>
+</header>
+<div class="container-fluid" style="padding: 0px">
+		<div class="container" style="width: 100%">
+         <nav class="navbar navbar-default navbar-fixed-top">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/api/login/">Inicia sesión</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/api/newpost/">Agrega y accede a tus publicaciones</a></li>
+                <li><a href="/api/allclients/">Administra tus Trabajos (por cliente)</a></li>
+          <li><a href="/api/home/">Ir a la página para los clientes</a></li>
+              {% if username != None %}
+                  <li style="background: transparent"><a style="background: transparent"><form method="POST" action="/api/logout/"><strong>Bienvenido: {{ username }}</strong>{% csrf_token %}
+                      <input type="submit" value="Cerrar sesión" class="bg-info"></form></a></li>
+
+              {% endif %}
+          </ul>
+        </div>
+    </nav>
+        {%if payments != None %}
+			<h1 class="text-center bg-gray table-bordered text-uppercase"><i>Pagos del cliente {{ u.name }} {{ u.firstLastName }} {{ u.secondLastName }}</i></h1>
+ 			<hr class="table-bordered">
+                <div class="row">
+                <div class="text-center col-xs-12 col-sm-12 ">
+                <div class="wrapper tabled">
+                    <div class="stage table-bordered" id="page1">
+                        <div class="middled">
+                            {% for payment in payments %}
+                            <div class="link-2">
+                            <a class="links" href="/api/rest/payments/{{ payment.id }}/data/">
+                                <span class="thick">{{ payment.date }}</span>
+                                <p class="l">Detalles/Editar/Eliminar</p>
+                            </a>
+                            <br>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                </div>
+                </div>
+        {% endif %}
+        <hr class="table-bordered">
+        <h1 class="text-center bg-gray table-bordered text-uppercase"><i>Agrega nuevos pagos al trabajo {{ ser.name }}</i></h1>
+        <hr class="table-bordered">
+        <div class="row">
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <br>
+                       <label class="form-group">Selecciona la cantidad del pago(abono)</label>  {{ formp.amountPaid }}
+                    <br>
+                    </div>
+                        </div>
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                            <label class="form-group vertical">Selecciona la fecha del pago</label>  {{ formp.date }}
+                        <br>
+                        <div class="text-center">
+                        <input type="submit" class="btn btn-lg btn-primary "   value="Agregar">
+                        </div>
+                        </div>
+                </div>
+            </form>
+        </div>
+        </div>
+		<p class="text-center">
+			<i id="passwordHelpInline" class="text-muted"> Sitio de Administración para la Carpintería Ramírez.</i>
+		</p>
+	</div>
+</body>
+</html>
