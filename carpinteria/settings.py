@@ -140,7 +140,8 @@ MEDIA_URL='/media/'
 LOGIN_URL='/api/login/'
 LOGIN_REDIRECT_URL = '/api/rest/posts/'
 STATIC_ROOT = Path(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = (Path(BASE_DIR, 'static'),)
+#STATICFILES_DIRS = (Path(BASE_DIR, "static"),)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_URL = '/static/'
 DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
