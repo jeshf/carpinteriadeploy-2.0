@@ -153,4 +153,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #heroku config allowed hosts
 ALLOWED_HOSTS = ['.herokuapp.com']
 import django_heroku
-django_heroku.settigns(locals())
+django_heroku.settings(locals())
